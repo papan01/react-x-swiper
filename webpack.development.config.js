@@ -2,7 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const Visualizer = require('webpack-visualizer-plugin');
 const BaseConfig = require('./webpack.base.config');
-const { resolvePath, SRC_DIR } = require('./tools/getPath');
+const { resolvePath, SRC_DIR, DIST_DIR } = require('./tools/getPath');
 
 module.exports = argv => {
   const { plugins, ...rest } = BaseConfig(argv);
@@ -27,6 +27,11 @@ module.exports = argv => {
     mode: 'development',
     entry: {
       index: resolvePath(SRC_DIR, 'entry/index.jsx'),
+    },
+    output: {
+      filename: '[name].js',
+      chunkFilename: '[name].chunk.js',
+      path: DIST_DIR,
     },
     plugins,
     optimization: {

@@ -1,5 +1,5 @@
 <h1 align="center">
-  React-X-SWIPER
+  React-x-swiper
 </h1>
 
 A react carousel component.

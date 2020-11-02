@@ -1,29 +1,20 @@
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { SRC_DIR, DIST_DIR } = require('./tools/getPath');
+const { SRC_DIR } = require('./tools/getPath');
 
 module.exports = argv => {
   const isDev = argv.mode === 'development';
   const plugins = [
-    new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[name].[chunkhash:8].css',
     }),
   ];
 
-  const output = {
-    filename: isDev ? '[name].js' : '[name].[chunkhash:8].js',
-    chunkFilename: isDev ? '[name].chunk.js' : '[name].[chunkhash:8].chunk.js',
-    path: DIST_DIR,
-  };
-
   return {
     plugins,
     resolve: {
       extensions: ['.jsx', '.js', '.json'],
     },
-    output,
     module: {
       rules: [
         {

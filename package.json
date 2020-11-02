@@ -1,11 +1,10 @@
 {
-  "name": "react-x-slider",
-  "version": "1.0.0",
+  "name": "@papan01yi/react-x-swiper",
   "description": "A react carousel component",
-  "private": true,
+  "version": "1.0.4",
   "scripts": {
     "build": "webpack",
-    "clean": "rimraf ./dist ./node_modules package-lock.json",
+    "clean": "rimraf ./dist ./publish ./node_modules package-lock.json",
     "prod": "npm run build -- --mode=production",
     "dev": "npm run build -- --mode=development",
     "start:prod": "webpack-dev-server --open --mode=production",
@@ -13,7 +12,8 @@
     "lint": "eslint --ext .js,.jsx ./src",
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier --write \"**/*.{md,css,scss,yaml,yml}\"",
-    "test": "jest"
+    "test": "jest",
+    "publish:update": "rimraf ./publish && npm run prod && copy package.json publish && copy README.md publish && npm publish ./publish --access public"
   },
   "browserslist": [
     ">1%",
@@ -27,12 +27,16 @@
     "Slider",
     "Carousel "
   ],
-  "author": "Papan01",
+  "author": "papan01",
   "license": "MIT",
   "repository": {
-    "type": "git"
+    "type": "git",
+    "url": "https://github.com/papan01/react-x-swiper.git"
   },
-  "bugs": {},
+  "homepage": "https://github.com/papan01/react-x-swiper",
+  "bugs": {
+    "url": "https://github.com/papan01/react-x-swiper.git/issues"
+  },
   "devDependencies": {
     "@babel/cli": "^7.6.4",
     "@babel/core": "^7.6.4",
@@ -41,7 +45,6 @@
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
-    "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.2.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
