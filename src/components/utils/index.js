@@ -1,14 +1,16 @@
-export function getTransformStyle(dragging, transformX) {
+export function getTransitionStyle(dragging, duration) {
   return {
-    transition: `all ${dragging ? '0ms' : '300ms'} ease 0s`,
-    WebkitTransform: `translate3d(${transformX}px, 0px, 0px)`,
-    transform: `translate3d(${transformX}px, 0px, 0px)`,
-    msTransform: `translate3d(${transformX}px, 0px, 0px)`,
+    transition: `all ${dragging ? '0ms' : `${duration}ms`} ease 0s`,
   };
 }
 
-export function calculateTransformX(transformX, currentX, startX) {
-  return transformX + Math.round(currentX - startX);
+export function getTransformStyle(transformX, currentX, startX) {
+  const length = transformX + Math.round(currentX - startX);
+  return {
+    WebkitTransform: `translate3d(${length}px, 0px, 0px)`,
+    transform: `translate3d(${length}px, 0px, 0px)`,
+    msTransform: `translate3d(${length}px, 0px, 0px)`,
+  };
 }
 
 export function resetPosition(

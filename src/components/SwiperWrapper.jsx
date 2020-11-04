@@ -1,10 +1,17 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import useResizeObserver from './hooks/useResizeObserver';
-import { getTransformStyle, calculateTransformX, resetPosition } from './utils';
+import { getTransitionStyle, getTransformStyle, resetPosition } from './utils';
 
-function SwiperWrapper({ children, slideLength, touchThreshold }) {
+function SwiperWrapper({
+  children,
+  slideLength,
+  touchThreshold,
+  duration,
+  currentIndex,
+  setCurrentIndex,
+}) {
   const [slideWidth, setSlideWidth] = useState(0);
   const [dragging, setDragging] = useState(false);
   const [touchX, setTouchX] = useState({
@@ -12,7 +19,8 @@ function SwiperWrapper({ children, slideLength, touchThreshold }) {
     currentX: 0,
   });
   const [transformX, setTransformX] = useState(0);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [transitionStyle, setTransitionStyle] = useState({});
+  const [transformStyle, setTransformStyle] = useState({});
   const wrapper = useRef();
 
   useResizeObserver(wrapper, entries => {
@@ -54,6 +62,7 @@ function SwiperWrapper({ children, slideLength, touchThreshold }) {
     setTouchX({ startX: 0, currentX: 0 });
   }, [
     currentIndex,
+    setCurrentIndex,
     slideLength,
     slideWidth,
     touchThreshold,
@@ -62,16 +71,32 @@ function SwiperWrapper({ children, slideLength, touchThreshold }) {
     transformX,
   ]);
 
+  useEffect(() => {
+    setTransformX(currentIndex * slideWidth * -1);
+  }, [currentIndex, slideWidth]);
+
+  useEffect(() => {
+    setTransformStyle(
+      getTransformStyle(transformX, touchX.currentX, touchX.startX),
+    );
+  }, [touchX.currentX, touchX.startX, transformX]);
+
+  useEffect(() => {
+    setTransitionStyle(getTransitionStyle(dragging, duration));
+    if (dragging === false) {
+      setTimeout(() => {
+        setTransitionStyle(getTransitionStyle(false, 0));
+      }, duration);
+    }
+  }, [dragging, duration, currentIndex]);
+
   return (
     <div
       ref={wrapper}
       className="swiper-wrapper"
       style={
         slideWidth > 0
-          ? getTransformStyle(
-              dragging,
-              calculateTransformX(transformX, touchX.currentX, touchX.startX),
-            )
+          ? { ...transitionStyle, ...transformStyle }
           : { left: -1000 }
       }
       role="presentation"
@@ -84,12 +109,11 @@ function SwiperWrapper({ children, slideLength, touchThreshold }) {
       onTouchEnd={onMouseEnd}
       onTouchCancel={onMouseEnd}
     >
-      {React.Children.map(children, child =>
-        React.cloneElement(child, {
-          className: 'swiper-slide',
-          style: { width: `${slideWidth}px` },
-        }),
-      )}
+      {React.Children.map(children, child => (
+        <div className="swiper-slide" style={{ width: `${slideWidth}px` }}>
+          {child}
+        </div>
+      ))}
     </div>
   );
 }
@@ -98,6 +122,9 @@ SwiperWrapper.propTypes = {
   children: PropTypes.node.isRequired,
   slideLength: PropTypes.number.isRequired,
   touchThreshold: PropTypes.number.isRequired,
+  duration: PropTypes.number.isRequired,
+  currentIndex: PropTypes.number.isRequired,
+  setCurrentIndex: PropTypes.func.isRequired,
 };
 
 export default SwiperWrapper;
