@@ -1,14 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import SwiperWrapper from './SwiperWrapper';
+import defaultProps from './defaultProps';
+import Dots from './pagination/Dots';
 import './swiper.scss';
 
-function Swiper({ children, touchThreshold, duration }) {
+function Swiper({
+  children,
+  touchThreshold,
+  duration,
+  pagination,
+  CustomDot,
+  PagingWrapper,
+}) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  return (
+  const [slideLength, setSlideLength] = useState(0);
+  useEffect(() => {
+    setSlideLength(React.Children.toArray(children).length);
+  }, [children]);
+  return slideLength > 0 ? (
     <div className="swiper-container">
       <SwiperWrapper
-        slideLength={children.length}
+        slideLength={slideLength}
         touchThreshold={touchThreshold}
         duration={duration}
         currentIndex={currentIndex}
@@ -16,33 +29,27 @@ function Swiper({ children, touchThreshold, duration }) {
       >
         {children}
       </SwiperWrapper>
-      <div className="swiper-pagination">
-        {React.Children.map(children, (_, index) => (
-          <span
-            className={`swiper-pagination-dot ${
-              currentIndex === index ? 'active' : null
-            }`}
-            onClick={() => setCurrentIndex(index)}
-            role="button"
-            aria-hidden="true"
-          >
-            {index + 1}
-          </span>
-        ))}
-      </div>
+      {pagination ? (
+        <Dots
+          slideLength={slideLength}
+          currentIndex={currentIndex}
+          setCurrentIndex={setCurrentIndex}
+          CustomDot={CustomDot}
+          PagingWrapper={PagingWrapper}
+        />
+      ) : null}
     </div>
-  );
+  ) : null;
 }
 
 Swiper.propTypes = {
   children: PropTypes.node.isRequired,
   touchThreshold: PropTypes.number,
   duration: PropTypes.number,
+  pagination: PropTypes.bool,
+  CustomDot: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  PagingWrapper: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 };
 
-Swiper.defaultProps = {
-  touchThreshold: 5,
-  duration: 500,
-};
-
+Swiper.defaultProps = defaultProps;
 export default Swiper;

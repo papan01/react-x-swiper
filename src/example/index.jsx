@@ -4,7 +4,7 @@ import './style.scss';
 
 export default function Example() {
   return (
-    <Swiper>
+    <Swiper pagination>
       <h2>Slide 1</h2>
       <h2>Slide 2</h2>
       <h2>Slide 3</h2>
