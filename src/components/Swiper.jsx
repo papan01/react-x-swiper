@@ -29,7 +29,7 @@ function Swiper({
       >
         {children}
       </SwiperWrapper>
-      {pagination ? (
+      {pagination && slideLength > 1 ? (
         <Dots
           slideLength={slideLength}
           currentIndex={currentIndex}
