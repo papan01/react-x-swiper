@@ -1,6 +1,5 @@
-import React, { useRef, useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import debounce from 'lodash.debounce';
 import useResizeObserver from './hooks/useResizeObserver';
 import { getTransitionStyle, getTransformStyle, resetPosition } from './utils';
 
@@ -21,16 +20,13 @@ function SwiperWrapper({
   const [transformX, setTransformX] = useState(0);
   const [transitionStyle, setTransitionStyle] = useState({});
   const [transformStyle, setTransformStyle] = useState({});
-  const wrapper = useRef();
+  const [ref, { contentRect }] = useResizeObserver();
 
-  useResizeObserver(wrapper, entries => {
-    const debounceResizing = debounce(
-      () =>
-        setSlideWidth(entries.length > 0 && `${entries[0].contentRect.width}`),
-      100,
-    );
-    debounceResizing();
-  });
+  useEffect(() => {
+    if (contentRect) {
+      setSlideWidth(contentRect.width);
+    }
+  }, [contentRect]);
 
   const onMouseDown = useCallback(e => {
     const x = e.touches ? e.touches[0].pageX : e.clientX;
@@ -96,7 +92,7 @@ function SwiperWrapper({
 
   return (
     <div
-      ref={wrapper}
+      ref={ref}
       className="swiper-wrapper"
       style={
         slideWidth > 0

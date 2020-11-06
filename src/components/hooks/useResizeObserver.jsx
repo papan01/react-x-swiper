@@ -1,26 +1,26 @@
-import { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useLayoutEffect, useRef, useState, useCallback } from 'react';
+import ResizeObserver from 'resize-observer-polyfill';
 
-function useResizeObserver(ref, callback) {
-  useEffect(() => {
-    const resizeObserver = new ResizeObserver(entries => {
-      callback(entries);
-    });
+function useResizeObserver() {
+  const [observerEntry, setObserverEntry] = useState({});
+  const [node, setNode] = useState(null);
+  const observer = useRef(null);
 
-    resizeObserver.observe(ref.current);
-    return () => {
-      resizeObserver.disconnect();
-    };
-  }, [callback, ref]);
+  const disconnect = useCallback(() => {
+    if (observer.current) observer.current.disconnect();
+  }, []);
+
+  const observe = useCallback(() => {
+    observer.current = new ResizeObserver(([entry]) => setObserverEntry(entry));
+    if (node) observer.current.observe(node);
+  }, [node]);
+
+  useLayoutEffect(() => {
+    observe();
+    return () => disconnect();
+  }, [disconnect, observe]);
+
+  return [setNode, observerEntry];
 }
-
-useResizeObserver.propTypes = {
-  ref: PropTypes.node.isRequired,
-  callback: PropTypes.func,
-};
-
-useResizeObserver.defaultProps = {
-  callback: () => {},
-};
 
 export default useResizeObserver;
