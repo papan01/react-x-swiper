@@ -82,12 +82,16 @@ function SwiperWrapper({
   }, [touchX.currentX, touchX.startX, transformX]);
 
   useEffect(() => {
+    let t;
     setTransitionStyle(getTransitionStyle(dragging, duration));
     if (dragging === false) {
-      setTimeout(() => {
+      t = setTimeout(() => {
         setTransitionStyle(getTransitionStyle(false, 0));
       }, duration);
     }
+    return () => {
+      if (t) clearTimeout(t);
+    };
   }, [dragging, duration, currentIndex]);
 
   return (
