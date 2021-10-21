@@ -18,6 +18,12 @@ function Swiper({
   useEffect(() => {
     setSlideLength(React.Children.toArray(children).length);
   }, [children]);
+
+  useEffect(() => {
+    const len = React.Children.toArray(children).length;
+    if (currentIndex >= len && len !== 0) setCurrentIndex(len - 1);
+  }, [children, currentIndex]);
+
   return slideLength > 0 ? (
     <div className="swiper-container">
       <SwiperWrapper
