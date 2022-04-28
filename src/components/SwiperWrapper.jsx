@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import useResizeObserver from './hooks/useResizeObserver';
+import useInterval from './hooks/useInterval';
 import { getTransitionStyle, getTransformStyle, resetPosition } from './utils';
 
 function SwiperWrapper({
@@ -10,6 +11,8 @@ function SwiperWrapper({
   duration,
   currentIndex,
   setCurrentIndex,
+  autoPlay,
+  autoPlaySpeed,
 }) {
   const [slideWidth, setSlideWidth] = useState(0);
   const [dragging, setDragging] = useState(false);
@@ -21,6 +24,9 @@ function SwiperWrapper({
   const [transitionStyle, setTransitionStyle] = useState({});
   const [transformStyle, setTransformStyle] = useState({});
   const [ref, { contentRect }] = useResizeObserver();
+  const [autoPlaySpeed_, setAutoPlaySpeed] = useState(
+    autoPlay ? autoPlaySpeed : null,
+  );
 
   useEffect(() => {
     if (contentRect) {
@@ -67,6 +73,14 @@ function SwiperWrapper({
     transformX,
   ]);
 
+  const onMouseOver = useCallback(() => {
+    setAutoPlaySpeed(null);
+  }, []);
+
+  const onMouseOut = useCallback(() => {
+    setAutoPlaySpeed(autoPlaySpeed);
+  }, [autoPlaySpeed]);
+
   useEffect(() => {
     setTransformX(currentIndex * slideWidth * -1);
   }, [currentIndex, slideWidth]);
@@ -90,6 +104,14 @@ function SwiperWrapper({
     };
   }, [dragging, duration, currentIndex]);
 
+  useInterval(() => {
+    if (autoPlay) {
+      let next = currentIndex + 1;
+      if (next === slideLength) next = 0;
+      setCurrentIndex(next);
+    }
+  }, autoPlaySpeed_);
+
   return (
     <div
       ref={ref}
@@ -104,10 +126,14 @@ function SwiperWrapper({
       onMouseMove={dragging ? onMouseMove : null}
       onMouseUp={onMouseEnd}
       onMouseLeave={onMouseEnd}
+      onMouseOver={onMouseOver}
+      onMouseOut={onMouseOut}
       onTouchStart={onMouseDown}
       onTouchMove={dragging ? onMouseMove : null}
       onTouchEnd={onMouseEnd}
       onTouchCancel={onMouseEnd}
+      onFocus={onMouseOver}
+      onBlur={onMouseOut}
     >
       {React.Children.map(children, child => (
         <div className="swiper-slide" style={{ width: `${slideWidth}px` }}>
@@ -125,6 +151,8 @@ SwiperWrapper.propTypes = {
   duration: PropTypes.number.isRequired,
   currentIndex: PropTypes.number.isRequired,
   setCurrentIndex: PropTypes.func.isRequired,
+  autoPlay: PropTypes.bool.isRequired,
+  autoPlaySpeed: PropTypes.number.isRequired,
 };
 
 export default SwiperWrapper;

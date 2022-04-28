@@ -12,6 +12,8 @@ function Swiper({
   pagination,
   CustomDot,
   PagingWrapper,
+  autoPlay,
+  autoPlaySpeed,
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slideLength, setSlideLength] = useState(0);
@@ -32,6 +34,8 @@ function Swiper({
         duration={duration}
         currentIndex={currentIndex}
         setCurrentIndex={setCurrentIndex}
+        autoPlay={autoPlay}
+        autoPlaySpeed={autoPlaySpeed}
       >
         {children}
       </SwiperWrapper>
@@ -55,6 +59,8 @@ Swiper.propTypes = {
   pagination: PropTypes.bool,
   CustomDot: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   PagingWrapper: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  autoPlay: PropTypes.bool,
+  autoPlaySpeed: PropTypes.number,
 };
 
 Swiper.defaultProps = defaultProps;

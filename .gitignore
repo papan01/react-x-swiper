@@ -72,3 +72,5 @@ dist/
 
 # publish folder
 publish/
+
+package-lock.json
