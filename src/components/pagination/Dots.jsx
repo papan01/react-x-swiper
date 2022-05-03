@@ -9,6 +9,7 @@ function Dots({
   setCurrentIndex,
   CustomDot,
   PagingWrapper,
+  onDotClick,
 }) {
   const dots = [];
   for (let i = 0; i < slideLength; i += 1) {
@@ -28,6 +29,7 @@ function Dots({
         active={currentIndex === i}
         onClick={() => {
           setCurrentIndex(i);
+          if (onDotClick) onDotClick(i);
         }}
       />
     );
@@ -46,11 +48,13 @@ Dots.propTypes = {
   setCurrentIndex: PropTypes.func.isRequired,
   CustomDot: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   PagingWrapper: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  onDotClick: PropTypes.func,
 };
 
 Dots.defaultProps = {
   CustomDot: null,
   PagingWrapper: null,
+  onDotClick: null,
 };
 
 export default React.memo(Dots);

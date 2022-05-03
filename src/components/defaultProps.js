@@ -6,6 +6,8 @@ const defaultProps = {
   PagingWrapper: null,
   autoPlay: false,
   autoPlaySpeed: 3000,
+  curIndex: 0,
+  onDotClick: null,
 };
 
 export default defaultProps;

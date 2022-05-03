@@ -14,6 +14,8 @@ function Swiper({
   PagingWrapper,
   autoPlay,
   autoPlaySpeed,
+  curIndex,
+  onDotClick,
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slideLength, setSlideLength] = useState(0);
@@ -25,6 +27,10 @@ function Swiper({
     const len = React.Children.toArray(children).length;
     if (currentIndex >= len && len !== 0) setCurrentIndex(len - 1);
   }, [children, currentIndex]);
+
+  useEffect(() => {
+    setCurrentIndex(curIndex);
+  }, [curIndex]);
 
   return slideLength > 0 ? (
     <div className="swiper-container">
@@ -46,6 +52,7 @@ function Swiper({
           setCurrentIndex={setCurrentIndex}
           CustomDot={CustomDot}
           PagingWrapper={PagingWrapper}
+          onDotClick={onDotClick}
         />
       ) : null}
     </div>
@@ -61,6 +68,8 @@ Swiper.propTypes = {
   PagingWrapper: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   autoPlay: PropTypes.bool,
   autoPlaySpeed: PropTypes.number,
+  curIndex: PropTypes.number,
+  onDotClick: PropTypes.func,
 };
 
 Swiper.defaultProps = defaultProps;
