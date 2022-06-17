@@ -8,6 +8,7 @@ const defaultProps = {
   autoPlaySpeed: 3000,
   curIndex: 0,
   onDotClick: null,
+  closeAutoPlayWhenClick: false,
 };
 
 export default defaultProps;

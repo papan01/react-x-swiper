@@ -13,8 +13,10 @@ function SwiperWrapper({
   setCurrentIndex,
   autoPlay,
   autoPlaySpeed,
+  closeAutoPlayWhenClick,
 }) {
   const [slideWidth, setSlideWidth] = useState(0);
+  const [autoPlay_, setAutoPlay] = useState(autoPlay);
   const [dragging, setDragging] = useState(false);
   const [touchX, setTouchX] = useState({
     startX: 0,
@@ -34,11 +36,16 @@ function SwiperWrapper({
     }
   }, [contentRect]);
 
-  const onMouseDown = useCallback(e => {
-    const x = e.touches ? e.touches[0].pageX : e.clientX;
-    setTouchX({ startX: x, currentX: x });
-    setDragging(true);
-  }, []);
+  const onMouseDown = useCallback(
+    e => {
+      const x = e.touches ? e.touches[0].pageX : e.clientX;
+      setTouchX({ startX: x, currentX: x });
+      setDragging(true);
+      setAutoPlaySpeed(null);
+      if (closeAutoPlayWhenClick) setAutoPlay(false); // Strange requirement
+    },
+    [closeAutoPlayWhenClick],
+  );
 
   const onMouseMove = useCallback(
     e => {
@@ -98,17 +105,14 @@ function SwiperWrapper({
       t = setTimeout(() => {
         setTransitionStyle(getTransitionStyle(false, 0));
       }, duration);
-      setAutoPlaySpeed(autoPlaySpeed);
-    } else {
-      setAutoPlaySpeed(null);
     }
     return () => {
       if (t) clearTimeout(t);
     };
-  }, [dragging, duration, currentIndex, autoPlaySpeed]);
+  }, [dragging, duration, currentIndex]);
 
   useInterval(() => {
-    if (autoPlay) {
+    if (autoPlay_) {
       let next = currentIndex + 1;
       if (next === slideLength) next = 0;
       setCurrentIndex(next);
@@ -156,6 +160,7 @@ SwiperWrapper.propTypes = {
   setCurrentIndex: PropTypes.func.isRequired,
   autoPlay: PropTypes.bool.isRequired,
   autoPlaySpeed: PropTypes.number.isRequired,
+  closeAutoPlayWhenClick: PropTypes.bool.isRequired,
 };
 
 export default SwiperWrapper;

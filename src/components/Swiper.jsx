@@ -16,6 +16,7 @@ function Swiper({
   autoPlaySpeed,
   curIndex,
   onDotClick,
+  closeAutoPlayWhenClick,
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slideLength, setSlideLength] = useState(0);
@@ -42,6 +43,7 @@ function Swiper({
         setCurrentIndex={setCurrentIndex}
         autoPlay={autoPlay}
         autoPlaySpeed={autoPlaySpeed}
+        closeAutoPlayWhenClick={closeAutoPlayWhenClick}
       >
         {children}
       </SwiperWrapper>
@@ -70,6 +72,7 @@ Swiper.propTypes = {
   autoPlaySpeed: PropTypes.number,
   curIndex: PropTypes.number,
   onDotClick: PropTypes.func,
+  closeAutoPlayWhenClick: PropTypes.bool,
 };
 
 Swiper.defaultProps = defaultProps;
