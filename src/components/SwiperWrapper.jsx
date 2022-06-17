@@ -98,11 +98,14 @@ function SwiperWrapper({
       t = setTimeout(() => {
         setTransitionStyle(getTransitionStyle(false, 0));
       }, duration);
+      setAutoPlaySpeed(autoPlaySpeed);
+    } else {
+      setAutoPlaySpeed(null);
     }
     return () => {
       if (t) clearTimeout(t);
     };
-  }, [dragging, duration, currentIndex]);
+  }, [dragging, duration, currentIndex, autoPlaySpeed]);
 
   useInterval(() => {
     if (autoPlay) {
