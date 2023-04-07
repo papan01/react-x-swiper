@@ -19,7 +19,9 @@ function Swiper({
   closeAutoPlayWhenClick,
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [slideLength, setSlideLength] = useState(0);
+  const [slideLength, setSlideLength] = useState(
+    React.Children.toArray(children).length,
+  );
   useEffect(() => {
     setSlideLength(React.Children.toArray(children).length);
   }, [children]);
