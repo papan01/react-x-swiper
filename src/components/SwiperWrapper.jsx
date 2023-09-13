@@ -32,7 +32,11 @@ function SwiperWrapper({
 
   useEffect(() => {
     if (contentRect) {
-      setSlideWidth(contentRect.width);
+      let contentRectWidth = contentRect.width;
+      const bodyWidth = document?.body?.clientWidth;
+      if (bodyWidth > 0)
+        contentRectWidth = Math.min(contentRectWidth, bodyWidth);
+      setSlideWidth(contentRectWidth);
     }
   }, [contentRect]);
 

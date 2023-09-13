@@ -40,7 +40,7 @@ function Swiper({
   }, [curIndex, slideLength]);
 
   return slideLength > 0 ? (
-    <div>
+    <div className="swiper">
       <div className="swiper-container">
         <SwiperWrapper
           slideLength={slideLength}
