@@ -19,6 +19,9 @@ function Swiper({
   closeAutoPlayWhenClick,
   LeftArrow,
   RightArrow,
+  containerStyle,
+  onLeftArrowClick,
+  onRightArrowClick,
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slideLength, setSlideLength] = useState(
@@ -36,12 +39,14 @@ function Swiper({
   useEffect(() => {
     if (curIndex < 0) setCurrentIndex(0);
     else if (curIndex >= slideLength) setCurrentIndex(slideLength - 1);
-    else setCurrentIndex(curIndex);
+    else {
+      setCurrentIndex(curIndex);
+    }
   }, [curIndex, slideLength]);
 
   return slideLength > 0 ? (
     <div className="swiper">
-      <div className="swiper-container">
+      <div className="swiper-container" style={containerStyle}>
         <SwiperWrapper
           slideLength={slideLength}
           touchThreshold={touchThreshold}
@@ -55,10 +60,20 @@ function Swiper({
           {children}
         </SwiperWrapper>
         {LeftArrow && currentIndex > 0 && (
-          <LeftArrow onClick={() => setCurrentIndex(currentIndex - 1)} />
+          <LeftArrow
+            onClick={() => {
+              if (typeof onLeftArrowClick === 'function') onLeftArrowClick();
+              setCurrentIndex(currentIndex - 1);
+            }}
+          />
         )}
         {RightArrow && currentIndex < slideLength - 1 && (
-          <RightArrow onClick={() => setCurrentIndex(currentIndex + 1)} />
+          <RightArrow
+            onClick={() => {
+              if (typeof onRightArrowClick === 'function') onRightArrowClick();
+              setCurrentIndex(currentIndex + 1);
+            }}
+          />
         )}
       </div>
       {pagination && slideLength > 1 ? (
@@ -89,6 +104,10 @@ Swiper.propTypes = {
   closeAutoPlayWhenClick: PropTypes.bool,
   LeftArrow: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   RightArrow: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  // eslint-disable-next-line react/forbid-prop-types
+  containerStyle: PropTypes.object,
+  onLeftArrowClick: PropTypes.func,
+  onRightArrowClick: PropTypes.func,
 };
 
 Swiper.defaultProps = defaultProps;

@@ -9,6 +9,8 @@ const defaultProps = {
   curIndex: 0,
   onDotClick: null,
   closeAutoPlayWhenClick: false,
+  onLeftArrowClick: null,
+  onRightArrowClick: null
 };
 
 export default defaultProps;

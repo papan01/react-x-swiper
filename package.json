@@ -1,7 +1,7 @@
 {
   "name": "@papan01yi/react-x-swiper",
   "description": "A react carousel component",
-  "version": "1.0.26",
+  "version": "1.0.29",
   "scripts": {
     "build": "webpack",
     "clean": "rimraf ./dist ./publish ./node_modules package-lock.json",
