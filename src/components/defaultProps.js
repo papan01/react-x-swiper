@@ -10,7 +10,8 @@ const defaultProps = {
   onDotClick: null,
   closeAutoPlayWhenClick: false,
   onLeftArrowClick: null,
-  onRightArrowClick: null
+  onRightArrowClick: null,
+  onSwipe: null,
 };
 
 export default defaultProps;

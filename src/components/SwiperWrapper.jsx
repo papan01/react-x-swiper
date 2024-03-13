@@ -14,6 +14,7 @@ function SwiperWrapper({
   autoPlay,
   autoPlaySpeed,
   closeAutoPlayWhenClick,
+  onSwipe,
 }) {
   const [slideWidth, setSlideWidth] = useState(0);
   const [autoPlay_, setAutoPlay] = useState(autoPlay);
@@ -69,6 +70,7 @@ function SwiperWrapper({
       touchX.currentX,
       touchX.startX,
       touchThreshold,
+      onSwipe,
     );
     setTransformX(res.transformX);
     setCurrentIndex(res.currentIndex);
@@ -82,6 +84,7 @@ function SwiperWrapper({
     touchX.currentX,
     touchX.startX,
     transformX,
+    onSwipe,
   ]);
 
   const onMouseOver = useCallback(() => {
@@ -165,6 +168,7 @@ SwiperWrapper.propTypes = {
   autoPlay: PropTypes.bool.isRequired,
   autoPlaySpeed: PropTypes.number.isRequired,
   closeAutoPlayWhenClick: PropTypes.bool.isRequired,
+  onSwipe: PropTypes.func.isRequired,
 };
 
 export default SwiperWrapper;

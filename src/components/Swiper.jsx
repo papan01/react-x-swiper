@@ -22,8 +22,9 @@ function Swiper({
   containerStyle,
   onLeftArrowClick,
   onRightArrowClick,
+  onSwipe,
 }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(curIndex);
   const [slideLength, setSlideLength] = useState(
     React.Children.toArray(children).length,
   );
@@ -56,6 +57,7 @@ function Swiper({
           autoPlay={autoPlay}
           autoPlaySpeed={autoPlaySpeed}
           closeAutoPlayWhenClick={closeAutoPlayWhenClick}
+          onSwipe={onSwipe}
         >
           {children}
         </SwiperWrapper>
@@ -108,6 +110,7 @@ Swiper.propTypes = {
   containerStyle: PropTypes.object,
   onLeftArrowClick: PropTypes.func,
   onRightArrowClick: PropTypes.func,
+  onSwipe: PropTypes.func,
 };
 
 Swiper.defaultProps = defaultProps;

@@ -21,6 +21,7 @@ export function resetPosition(
   currentX,
   startX,
   touchThreshold,
+  onSwipe,
 ) {
   const res = {
     currentIndex,
@@ -29,6 +30,7 @@ export function resetPosition(
   const swipeLength = Math.round(currentX - startX);
   const isSwipeLeft = swipeLength > 0;
   if (Math.abs(swipeLength) > slideWidth / touchThreshold) {
+    if (onSwipe && typeof onSwipe === 'function') onSwipe();
     if (isSwipeLeft && currentIndex !== 0) {
       res.currentIndex -= 1;
     } else if (!isSwipeLeft && currentIndex !== slideLength - 1) {
