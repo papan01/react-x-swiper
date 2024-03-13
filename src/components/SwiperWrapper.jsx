@@ -70,6 +70,7 @@ function SwiperWrapper({
     setTransformX(res.transformX);
     setCurrentIndex(res.currentIndex);
     setTouchX({ startX: 0, currentX: 0 });
+    setAutoPlaySpeed(autoPlaySpeed);
   }, [
     currentIndex,
     setCurrentIndex,
@@ -80,6 +81,8 @@ function SwiperWrapper({
     touchX.startX,
     transformX,
     onSwipe,
+    autoPlaySpeed,
+    setAutoPlaySpeed,
   ]);
 
   const onMouseOut = useCallback(() => {
