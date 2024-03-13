@@ -13,11 +13,10 @@ function SwiperWrapper({
   setCurrentIndex,
   autoPlay,
   autoPlaySpeed,
-  closeAutoPlayWhenClick,
   onSwipe,
 }) {
   const [slideWidth, setSlideWidth] = useState(0);
-  const [autoPlay_, setAutoPlay] = useState(autoPlay);
+  const [autoPlay_] = useState(autoPlay);
   const [dragging, setDragging] = useState(false);
   const [touchX, setTouchX] = useState({
     startX: 0,
@@ -41,16 +40,12 @@ function SwiperWrapper({
     }
   }, [contentRect]);
 
-  const onMouseDown = useCallback(
-    e => {
-      const x = e.touches ? e.touches[0].pageX : e.clientX;
-      setTouchX({ startX: x, currentX: x });
-      setDragging(true);
-      setAutoPlaySpeed(null);
-      if (closeAutoPlayWhenClick) setAutoPlay(false); // Strange requirement
-    },
-    [closeAutoPlayWhenClick],
-  );
+  const onMouseDown = useCallback(e => {
+    const x = e.touches ? e.touches[0].pageX : e.clientX;
+    setTouchX({ startX: x, currentX: x });
+    setDragging(true);
+    setAutoPlaySpeed(null);
+  }, []);
 
   const onMouseMove = useCallback(
     e => {
@@ -86,10 +81,6 @@ function SwiperWrapper({
     transformX,
     onSwipe,
   ]);
-
-  const onMouseOver = useCallback(() => {
-    setAutoPlaySpeed(null);
-  }, []);
 
   const onMouseOut = useCallback(() => {
     setAutoPlaySpeed(autoPlaySpeed);
@@ -140,13 +131,11 @@ function SwiperWrapper({
       onMouseMove={dragging ? onMouseMove : null}
       onMouseUp={onMouseEnd}
       onMouseLeave={onMouseEnd}
-      onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
       onTouchStart={onMouseDown}
       onTouchMove={dragging ? onMouseMove : null}
       onTouchEnd={onMouseEnd}
       onTouchCancel={onMouseEnd}
-      onFocus={onMouseOver}
       onBlur={onMouseOut}
     >
       {React.Children.map(children, child => (
@@ -167,7 +156,6 @@ SwiperWrapper.propTypes = {
   setCurrentIndex: PropTypes.func.isRequired,
   autoPlay: PropTypes.bool.isRequired,
   autoPlaySpeed: PropTypes.number.isRequired,
-  closeAutoPlayWhenClick: PropTypes.bool.isRequired,
   onSwipe: PropTypes.func.isRequired,
 };
 

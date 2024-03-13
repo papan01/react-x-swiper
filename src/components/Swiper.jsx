@@ -16,7 +16,6 @@ function Swiper({
   autoPlaySpeed,
   curIndex,
   onDotClick,
-  closeAutoPlayWhenClick,
   LeftArrow,
   RightArrow,
   containerStyle,
@@ -56,7 +55,6 @@ function Swiper({
           setCurrentIndex={setCurrentIndex}
           autoPlay={autoPlay}
           autoPlaySpeed={autoPlaySpeed}
-          closeAutoPlayWhenClick={closeAutoPlayWhenClick}
           onSwipe={onSwipe}
         >
           {children}
@@ -103,7 +101,6 @@ Swiper.propTypes = {
   autoPlaySpeed: PropTypes.number,
   curIndex: PropTypes.number,
   onDotClick: PropTypes.func,
-  closeAutoPlayWhenClick: PropTypes.bool,
   LeftArrow: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   RightArrow: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   // eslint-disable-next-line react/forbid-prop-types
