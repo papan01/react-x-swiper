@@ -5,7 +5,13 @@ import './style.scss';
 export default function Example() {
   const [currentIndex, setCurrentIndex] = useState(0);
   return (
-    <Swiper pagination curIndex={currentIndex} onDotClick={setCurrentIndex}>
+    <Swiper
+      pagination
+      curIndex={currentIndex}
+      onDotClick={setCurrentIndex}
+      autoPlay
+      autoPlaySpeed={2000}
+    >
       <h2>Slide 1</h2>
       <h2>Slide 2</h2>
       <h2>Slide 3</h2>
